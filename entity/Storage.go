@@ -17,6 +17,21 @@ type uSwitcher func (*User)
 type mFilter func (*Meeting) bool
 type mSwitcher func (*Meeting) 
 
+// getJson
+func getJson(v interface{}) string {
+	a, err := json.Marshal(v)
+	if err != nil {
+		panic(err)
+	}
+	return string(a)
+}
+
+// ReadFromDb .
+func ReadFromDb() {	
+	userlist := FindAllUser()
+	meetinglist := FindAllMeeting()	
+	}
+
 func ReadCurrentUser()  {
 	file1, err1 := os.Open("CurUser");
 	if err1 != nil {
@@ -30,54 +45,7 @@ func ReadCurrentUser()  {
 	file1.Close()
 }
 
-func ReadFromFile() {
-	//读user
-	file1, err1 := os.Open("UserInfo");
-	if err1 != nil {
-		fmt.Fprintf(os.Stderr, "Fail to open UserInfo")
-	}
-	dec1 := json.NewDecoder(file1)
-	err1 = dec1.Decode(&userlist)	
-	if err1 != io.EOF && err1 != nil {
-		fmt.Fprintf(os.Stderr, "Fail to Decode")
-	}
-	file1.Close()
 
-	//读Meeting
-	file2, err2 := os.Open("MeetingInfo");
-	if err2 != nil {
-		fmt.Fprintf(os.Stderr, "Fail to open MeetingInfo")
-	}
-	dec2 := json.NewDecoder(file2)
-	err2 = dec2.Decode(&meetinglist)	
-	if err2 != io.EOF && err2 != nil{
-		fmt.Fprintf(os.Stderr, "Fail to Decode")
-	} 
-	file2.Close()
-}
-
-func writeToFile()  {
-	//写User
-	file1, err1 := os.Create("UserInfo");
-	if err1 != nil {
-		fmt.Fprintf(os.Stderr, "Fail to create UserInfo")		
-	}
-	enc1 := json.NewEncoder(file1)	
-	if err1 := enc1.Encode(&userlist); err1 != nil {
-		fmt.Fprintf(os.Stderr, "Fail to encode")
-	}
-	file1.Close()
-	//写Meeting
-	file2, err2 := os.Create("MeetingInfo");
-	if err2 != nil {
-		fmt.Fprintf(os.Stderr, "Fail to create MeetingInfo")		
-	}
-	enc2 := json.NewEncoder(file2)	
-	if err2 := enc2.Encode(&meetinglist); err2 != nil {
-		fmt.Fprintf(os.Stderr, "Fail to encode")
-	}
-	file2.Close()
-}
 func writeCurrentUser()  {
 	file1, err1 := os.Create("CurUser");
 	if err1 != nil {
@@ -106,7 +74,7 @@ func queryUser(filter uFilter) []User {
 	}
 	return dy
 }
-
+/*
 func updateUser(filter uFilter, switcher uSwitcher) int {
 	n := 0
 	for _, u := range userlist {
@@ -117,6 +85,7 @@ func updateUser(filter uFilter, switcher uSwitcher) int {
 	}
 	return n
 }
+*/
 
 func deleteUser(filter uFilter) int {
 	n := 0
@@ -124,6 +93,7 @@ func deleteUser(filter uFilter) int {
 		if filter(&u) {
 			userlist[i] = userlist[len(userlist) - 1 - n]			
 			n++
+
 		}
 	}
 	userlist = userlist[:len(userlist)  - n]
@@ -139,6 +109,7 @@ func queryMeeting(filter mFilter) []Meeting {
 	return dy
 }
 
+/*
 func updateMeeting(filter mFilter, switcher mSwitcher) int {
 	n := 0
 	for _, m := range meetinglist {
@@ -149,7 +120,7 @@ func updateMeeting(filter mFilter, switcher mSwitcher) int {
 	}
 	return n
 }
-
+*/
 func deleteMeeting(filter mFilter) int {
 	n := 0
 	for i, m := range meetinglist {
