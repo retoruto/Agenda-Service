@@ -15,30 +15,27 @@ func FindAllUser() []User {
 
 //对未存在的用户进行插入，若存在则返回错误
 func CreateUser_DB(user *User) error {
-  var ut UserTable
-  ut = *user
-	_, err := engine.Insert(&ut)
+	_, err := engine.Insert(&UserTable{user.Name, user.Password, user.Email, user.Phone})
 	return err
 }
 
 //删除用户
 func DeleteUser_DB(user *User) error {
 	// 通过 Delete 方法删除记录
-	var ut UserTable
-  ut = *user
-	_, err := engine.Delete(&ut)
+	_, err := engine.Delete(&UserTable{user.Name, user.Password, user.Email, user.Phone})
 	
 	return err
 }
 
 //更新用户
 func UpdateUser_DB(user *User) error {
-	a := &User{Name:user.Name}
-	var ut UserTable
-  ut = *a
-	_ , _ := engine.Get(&ut)
+	a := &UserTable{Name:user.Name}
+	_ , _ := engine.Get(a)
 	// 方法 Update 接受的第一个参数必须是指针地址，指向需要更新的内容。
-	_, err := engine.Update(&ut)
+	a.Password = user.Password
+	a.Email = user.Email
+	a.Phone = user.Phone
+	_, err := engine.Update(a)
 	return err
 }
 
@@ -89,12 +86,12 @@ func DeleteMeeting_DB(meeting *Meeting) error {
 }
 
 //更新会议
-/*
+
 func UpdateMeeting_DB(meeting *Meeting) error {
-	a := &Meeting{Name:user.Name}
+	a := &MeetingTable{Title:meeting.Title}
 	_ , _ := engine.Get(a)
 	// 方法 Update 接受的第一个参数必须是指针地址，指向需要更新的内容。
+	a.Participators = getJson(meeting.Participators)
 	_, err := engine.Update(a)
 	return err
 }
-*/

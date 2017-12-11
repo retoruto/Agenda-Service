@@ -426,7 +426,7 @@ func Addparticipator(title string, participator []string) bool {
 			meetinglist[i] = mlist[0]
 		}
 	}
-	
+	UpdateMeeting_DB(mlist[0])
 	return true
 }
 
@@ -490,7 +490,8 @@ func Removeparticipator(title string, participator []string) bool {
 			meetinglist[i] = mlist[0]
 		}
 	}
-	
+	UpdateMeeting_DB(mlist[0])
+
 	filter2 := func(m *Meeting) bool {
 		if len(m.Participators) == 0 {
 			return true
@@ -549,6 +550,7 @@ func QuitMeeting(title string) bool {
 			meetinglist[i] = mlist[0]
 		}
 	}
+	UpdateMeeting_DB(mlist[0])
 	
 	filter2 := func(m *Meeting) bool {
 		if len(m.Participators) == 0 {

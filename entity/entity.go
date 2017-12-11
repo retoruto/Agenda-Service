@@ -1,3 +1,4 @@
+package entity
 type UserTable struct {
 	UserName string `xorm:"varchar(255) notnull unique"`
 	Password string `xorm:"varchar(255) notnull"`
