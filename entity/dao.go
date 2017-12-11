@@ -15,23 +15,30 @@ func FindAllUser() []User {
 
 //对未存在的用户进行插入，若存在则返回错误
 func CreateUser_DB(user *User) error {
-	_, err := engine.Insert(user)
+  var ut UserTable
+  ut = *user
+	_, err := engine.Insert(&ut)
 	return err
 }
 
 //删除用户
 func DeleteUser_DB(user *User) error {
 	// 通过 Delete 方法删除记录
-	_, err := engine.Delete(user)
+	var ut UserTable
+  ut = *user
+	_, err := engine.Delete(&ut)
+	
 	return err
 }
 
 //更新用户
 func UpdateUser_DB(user *User) error {
 	a := &User{Name:user.Name}
-	_ , _ := engine.Get(a)
+	var ut UserTable
+  ut = *a
+	_ , _ := engine.Get(&ut)
 	// 方法 Update 接受的第一个参数必须是指针地址，指向需要更新的内容。
-	_, err := engine.Update(a)
+	_, err := engine.Update(&ut)
 	return err
 }
 
@@ -49,31 +56,35 @@ func FindAllMeeting() []Meeting {
 
 		}
 
-		var sd string
-		if err := json.Unmarshal([]byte(t["StartDate"]), &st); err != nil {
-			panic(err)
-		}
-
-		var ed string
-		if err := json.Unmarshal([]byte(t["EndDate"]), &et); err != nil {
-			panic(err)
-		}
-
-		mSlice = append(mSlice, Meeting{t["Sponsor"], t["Title"], sd, ed, pa})
+		mSlice = append(mSlice, Meeting{t["Sponsor"], t["Title"], t["StartDate"], t["EndDate"], pa})
 	}	
 	return mSlice
 }
 
 //对未存在的会议进行插入，若存在则返回错误
 func CreateMeeting_DB(meeting *Meeting) error {
-	_, err := engine.Insert(meeting)
+	
+  mt := &MeetingTable { 	
+  Title : meeting.Title,
+	Sponsor : meeting.Sponsor,
+	StartTime : meeting.StartDate,
+	EndTime : meeting.EndDate,
+	Participators :getJson(meeting.Participators)}
+	_, err := engine.Insert(mt)
 	return err
 }
 
 //删除会议
 func DeleteMeeting_DB(meeting *Meeting) error {
 	// 通过 Delete 方法删除记录
-	_, err := engine.Delete(meeting)
+
+  mt := &MeetingTable { 	
+  Title : meeting.Title,
+	Sponsor : meeting.Sponsor,
+	StartTime : meeting.StartDate,
+	EndTime : meeting.EndDate,
+	Participators :getJson(meeting.Participators)}
+	_, err := engine.Delete(&mt)
 	return err
 }
 
@@ -87,4 +98,3 @@ func UpdateMeeting_DB(meeting *Meeting) error {
 	return err
 }
 */
-

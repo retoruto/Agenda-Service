@@ -59,10 +59,17 @@ func writeCurrentUser()  {
 }
 func createUser(t_user User) {
 	userlist = append(userlist,t_user)
-	
+	err := CreateUser_DB(&t_user)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Fail to create User")		
+	}
 }
 func createMeeting(t_meeting Meeting) {
 	meetinglist = append(meetinglist,t_meeting)
+	err := CreateMeeting_DB(&t_meeting)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Fail to create Meeting")		
+	}
 }
 
 func queryUser(filter uFilter) []User {
@@ -91,11 +98,16 @@ func deleteUser(filter uFilter) int {
 	n := 0
 	for i, u := range userlist {
 		if filter(&u) {
+		  err := DeleteUser_DB(&u)
+		  if err != nil {
+		    fmt.Fprintf(os.Stderr, "Fail to delete user")		
+    	}
 			userlist[i] = userlist[len(userlist) - 1 - n]			
 			n++
 
 		}
 	}
+	
 	userlist = userlist[:len(userlist)  - n]
 	return n
 }
@@ -125,13 +137,15 @@ func deleteMeeting(filter mFilter) int {
 	n := 0
 	for i, m := range meetinglist {
 		if filter(&m) {
+		  err := DeleteMeeting_DB(&m)
+		  if err != nil {
+		    fmt.Fprintf(os.Stderr, "Fail to delete Meeting")		
+    	}
 			meetinglist[i] = meetinglist[len(meetinglist) - 1 - n]
 			n++
 		}
 	}
+		
 	meetinglist = meetinglist[:len(meetinglist) - n]
 	return n
 }
-
-
-
