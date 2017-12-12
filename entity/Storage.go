@@ -69,6 +69,7 @@ func createUser(t_user User) {
 	userlist = append(userlist,t_user)
 	err := CreateUser_DB(&t_user)
 	if err != nil {
+		fmt.Print(err)
 		fmt.Fprintf(os.Stderr, "Fail to create User")		
 	}
 }

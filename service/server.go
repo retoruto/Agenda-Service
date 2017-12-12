@@ -51,6 +51,7 @@ func getUserInfoHandler(formatter *render.Render) http.HandlerFunc {
 			formatter.JSON(w, http.StatusBadRequest, u)
 			return
 		}*/
+		//entity.FindUser()
 		ulist, _ := entity.FindAllUser()
 		fmt.Println(ulist)
 		formatter.JSON(w, http.StatusOK, ulist)
@@ -68,7 +69,7 @@ func postUserInfoHandler(formatter *render.Render) http.HandlerFunc {
 		u.Password = req.Form["password"][0]
 		u.Email = req.Form["email"][0]
 		u.Phone = req.Form["phone"][0]
-		//entity.UserRegister(u.Name, u.Password, u.Email, u.Phone)
+		entity.UserRegister(u.Name, u.Password, u.Email, u.Phone)
 		formatter.JSON(w, http.StatusOK, u)
 	}
 }
