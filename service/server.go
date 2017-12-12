@@ -24,9 +24,9 @@ func NewServer() *negroni.Negroni {
 
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	//mx.HandleFunc("/hello/{id}", testHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/service/userinfo", UserRegisterHandler(formatter)).Methods("POST")
+	mx.HandleFunc("/v1/key", UserRegisterHandler(formatter)).Methods("POST")
 	mx.HandleFunc("/service/userinfo", ListAllUserHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/service/userinfo", DeleteUserHandler(formatter)).Methods("DELETE")
+	mx.HandleFunc("/service/userinfo/{username}", DeleteUserHandler(formatter)).Methods("DELETE")
 	//mx.HandleFunc("/v1/users", testHandler(formatter)).Methods("GET")
 }
 
