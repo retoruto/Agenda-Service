@@ -4,12 +4,10 @@ import (
 	"os"
 
 	"Agenda-Service/service"
-
 	flag "github.com/spf13/pflag"
 )
 
 const (
-	//PORT .
 	PORT string = "8080"
 )
 

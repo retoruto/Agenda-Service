@@ -1,4 +1,4 @@
-package entities
+package entity
 
 import (
 	"github.com/go-xorm/xorm"
@@ -17,7 +17,7 @@ func init() {
 	engine = orm
 
 	//名称映射规则,主要负责结构体名称到表名和结构体field到表字段的名称映射
-	engine.SetMapper(core.GonicMapper{})
+	//engine.SetMapper(core.GonicMapper{})
 }
 
 func checkErr(err error) {

@@ -1,16 +1,29 @@
 package entity
+import "encoding/json"
+type UserTable struct {
+	UserName string `xorm:"varchar(255) notnull unique"`
+	Password string `xorm:"varchar(255) notnull"`
+	Email    string `xorm:"varchar(255) notnull"`
+	Phone    string `xorm:"varchar(255) notnull"`
+}
 
+type MeetingTable struct {
+	Title     string     `xorm:"pk varchar(255) notnull unique"`
+	Sponsor   string     `xorm:"varchar(255) notnull"`
+	StartTime string 	 `xorm:"varchar(255) notnull"`
+	EndTime   string 	 `xorm:"varchar(255) notnull"`
+	Participators string `xorm:"varchar(255) notnull"`
+}
 // 得到所有用户数据
-func FindAllUser() []User {	
+func FindAllUser() ([]User, error) {	
 	//返回[]map[string]string和error
 	alluser, err := engine.QueryString("SELECT * FROM UserTable")
-	CheckErr(err)
 	
 	var uSlice []User
 	for _, t := range alluser {
 		uSlice = append(uSlice, User{t["Name"], t["Password"], t["Email"], t["Phone"]})
 	}
-	return uSlice
+	return uSlice, err
 }
 
 //对未存在的用户进行插入，若存在则返回错误
@@ -26,23 +39,21 @@ func DeleteUser_DB(user *User) error {
 	
 	return err
 }
-
 //更新用户
 func UpdateUser_DB(user *User) error {
-	a := &UserTable{Name:user.Name}
-	_ , _ := engine.Get(a)
+	a := &UserTable{UserName:user.Name}
+	_ , err := engine.Get(a)
 	// 方法 Update 接受的第一个参数必须是指针地址，指向需要更新的内容。
 	a.Password = user.Password
 	a.Email = user.Email
 	a.Phone = user.Phone
-	_, err := engine.Update(a)
+  _, err = engine.Update(a)
 	return err
 }
 
 // 得到所有会议数据
-func FindAllMeeting() []Meeting {
+func FindAllMeeting() ([]Meeting, error) {
 	allmeeting, err := engine.QueryString("SELECT * FROM MeetingTable")
-	CheckErr(err)
 
 	var mSlice []Meeting
 
@@ -55,7 +66,7 @@ func FindAllMeeting() []Meeting {
 
 		mSlice = append(mSlice, Meeting{t["Sponsor"], t["Title"], t["StartDate"], t["EndDate"], pa})
 	}	
-	return mSlice
+	return mSlice, err
 }
 
 //对未存在的会议进行插入，若存在则返回错误
@@ -86,12 +97,13 @@ func DeleteMeeting_DB(meeting *Meeting) error {
 }
 
 //更新会议
-
+/*
 func UpdateMeeting_DB(meeting *Meeting) error {
-	a := &MeetingTable{Title:meeting.Title}
+	a := &Meeting{Name:user.Name}
 	_ , _ := engine.Get(a)
 	// 方法 Update 接受的第一个参数必须是指针地址，指向需要更新的内容。
-	a.Participators = getJson(meeting.Participators)
 	_, err := engine.Update(a)
 	return err
 }
+*/
+

@@ -27,13 +27,21 @@ func getJson(v interface{}) string {
 }
 
 // ReadFromDb .
-func ReadFromDb() {	
-	userlist := FindAllUser()
-	meetinglist := FindAllMeeting()	
+func ReadFromDb() {
+  var err1, err2 error
+	userlist, err1 = FindAllUser()
+	if err1 != nil {
+		fmt.Fprintf(os.Stderr, "Fail to read users from sqlite3")
 	}
+	meetinglist, err2 = FindAllMeeting()
+	if err2 != nil {
+		fmt.Fprintf(os.Stderr, "Fail to read meetings from sqlite3")
+	}
+	
+}
 
 func ReadCurrentUser()  {
-	file1, err1 := os.Open("CurUser");
+	file1, err1 := os.Open("CurUser")
 	if err1 != nil {
 		fmt.Fprintf(os.Stderr, "Fail to open CurUser")
 	}
@@ -149,3 +157,6 @@ func deleteMeeting(filter mFilter) int {
 	meetinglist = meetinglist[:len(meetinglist) - n]
 	return n
 }
+
+
+

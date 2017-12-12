@@ -6,6 +6,7 @@ import (
 
 
 //不要在login后调用StartAgenda
+/*
 func StartAgenda() bool {
 	ReadFromFile()
 	ReadCurrentUser()
@@ -13,12 +14,12 @@ func StartAgenda() bool {
 		return false
 	}
 	return true
-}
-
+}*/
+/*
 func QuitAgenda() {
 	writeToFile()
 	writeCurrentUser()
-}
+}*/
 
 /**
 * check if the username match password
@@ -28,7 +29,7 @@ func QuitAgenda() {
 */
 //登录命令不需要调用StartAgenda,但需要调用QuitAgenda来保存登录信息
 func UserLogIn(userName string, password string) bool{
-		ReadFromFile()
+		ReadFromDb()
 		if (CurrentUser.Name != "") {
 			return false
 		}
@@ -426,7 +427,7 @@ func Addparticipator(title string, participator []string) bool {
 			meetinglist[i] = mlist[0]
 		}
 	}
-	UpdateMeeting_DB(mlist[0])
+	
 	return true
 }
 
@@ -490,8 +491,7 @@ func Removeparticipator(title string, participator []string) bool {
 			meetinglist[i] = mlist[0]
 		}
 	}
-	UpdateMeeting_DB(mlist[0])
-
+	
 	filter2 := func(m *Meeting) bool {
 		if len(m.Participators) == 0 {
 			return true
@@ -550,7 +550,6 @@ func QuitMeeting(title string) bool {
 			meetinglist[i] = mlist[0]
 		}
 	}
-	UpdateMeeting_DB(mlist[0])
 	
 	filter2 := func(m *Meeting) bool {
 		if len(m.Participators) == 0 {
