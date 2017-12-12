@@ -1,7 +1,7 @@
 package entity
 import (
 	"encoding/json"
-	"fmt"
+
 )
 type UserTable struct {
 	UserName string `xorm:"pk varchar(255) notnull "`
@@ -27,14 +27,14 @@ func FindUser()  {
 // 得到所有用户数据
 func FindAllUser() ([]User, error) {	
 	//返回[]map[string]string和error
-	alluser, err := engine.QueryString("SELECT * FROM UserTable")
+	alluser, err := engine.QueryString("SELECT * FROM user_table")
 
 	var uSlice []User
 	
 	for _, t := range alluser {
-		uSlice = append(uSlice, User{t["Name"], t["Password"], t["Email"], t["Phone"]})
+		uSlice = append(uSlice, User{t["user_name"], t["password"], t["email"], t["phone"]})
 	}
-	
+
 	return uSlice, err
 }
 
@@ -65,18 +65,18 @@ func UpdateUser_DB(user *User) error {
 
 // 得到所有会议数据
 func FindAllMeeting() ([]Meeting, error) {
-	allmeeting, err := engine.QueryString("SELECT * FROM MeetingTable")
+	allmeeting, err := engine.QueryString("SELECT * FROM meeting_table")
 
 	var mSlice []Meeting
 
 	for _, t := range allmeeting {
 		var pa []string
-		if err := json.Unmarshal([]byte(t["Participators"]), &pa); err != nil {
+		if err := json.Unmarshal([]byte(t["participators"]), &pa); err != nil {
 			panic(err)
 
 		}
 
-		mSlice = append(mSlice, Meeting{t["Sponsor"], t["Title"], t["StartDate"], t["EndDate"], pa})
+		mSlice = append(mSlice, Meeting{t["sponsor"], t["title"], t["startDate"], t["endDate"], pa})
 	}	
 	return mSlice, err
 }
@@ -89,7 +89,7 @@ func CreateMeeting_DB(meeting *Meeting) error {
 	Sponsor : meeting.Sponsor,
 	StartTime : meeting.StartDate,
 	EndTime : meeting.EndDate,
-	Participators :getJson(meeting.Participators)}
+	Participators :GetJson(meeting.Participators)}
 	_, err := engine.Insert(mt)
 	return err
 }
@@ -103,20 +103,20 @@ func DeleteMeeting_DB(meeting *Meeting) error {
 	Sponsor : meeting.Sponsor,
 	StartTime : meeting.StartDate,
 	EndTime : meeting.EndDate,
-	Participators :getJson(meeting.Participators)}
+	Participators :GetJson(meeting.Participators)}
 	_, err := engine.Delete(&mt)
 	return err
 }
 
 //更新会议
-/*
+
 func UpdateMeeting_DB(meeting *Meeting) error {
 	a := &MeetingTable{Title:meeting.Title}
-	_ , _ := engine.Get(a)
+	_, err := engine.Get(a)
 	// 方法 Update 接受的第一个参数必须是指针地址，指向需要更新的内容。
-	a.Participators = getJson(meeting.Participators)
-	_, err := engine.Update(a)
+	a.Participators = GetJson(meeting.Participators)
+	_, _ = engine.Update(a)
 	return err
 }
-*/
+
 

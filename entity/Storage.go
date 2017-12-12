@@ -18,7 +18,7 @@ type mFilter func (*Meeting) bool
 type mSwitcher func (*Meeting) 
 
 // getJson
-func getJson(v interface{}) string {
+func GetJson(v interface{}) string {
 	a, err := json.Marshal(v)
 	if err != nil {
 		panic(err)
