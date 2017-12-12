@@ -17,25 +17,31 @@ type MeetingTable struct {
 	EndTime   string 	 `xorm:"varchar(255) notnull"`
 	Participators string `xorm:"varchar(255) notnull"`
 }
-/*
-func FindUser()  {
-	user := &UserTable{UserName: "ooo"}
-	engine.Get(user)
-	fmt.Print(*user)
-}
-*/
+
+
 // 得到所有用户数据
 func FindAllUser() ([]User, error) {	
 	//返回[]map[string]string和error
 	alluser, err := engine.QueryString("SELECT * FROM user_table")
 
-	var uSlice []User
+	uSlice := []User{}
 	
 	for _, t := range alluser {
 		uSlice = append(uSlice, User{t["user_name"], t["password"], t["email"], t["phone"]})
 	}
 
 	return uSlice, err
+}
+
+// 得到所有用户数据
+func FindUserByName(name string) User {	
+
+	u := &UserTable{UserName:name}
+	_, err := engine.Get(u)
+	if err != nil {
+		panic(err)
+	}
+	return User{u.UserName, u.Password, u.Email, u.Phone}
 }
 
 //对未存在的用户进行插入，若存在则返回错误
@@ -67,7 +73,7 @@ func UpdateUser_DB(user *User) error {
 func FindAllMeeting() ([]Meeting, error) {
 	allmeeting, err := engine.QueryString("SELECT * FROM meeting_table")
 
-	var mSlice []Meeting
+	mSlice := []Meeting{}
 
 	for _, t := range allmeeting {
 		var pa []string
@@ -76,7 +82,7 @@ func FindAllMeeting() ([]Meeting, error) {
 
 		}
 
-		mSlice = append(mSlice, Meeting{t["sponsor"], t["title"], t["startDate"], t["endDate"], pa})
+		mSlice = append(mSlice, Meeting{t["sponsor"], t["title"], t["start_time"], t["end_time"], pa})
 	}	
 	return mSlice, err
 }

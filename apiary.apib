@@ -1,80 +1,133 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
 
-# Agenda-Service
+# Agenda
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Agenda is a simple API allowing consumers to schedule meeting online.
 
-## Questions Collection [/questions]
+# Group User
 
-### List All Questions [GET]
+## User-Key [/v1/key]
+
+### Get user key [GET /v1/key{?username,password}]
+
+
++ Parameters
+    - username : `zhang3` (string, required) - User Name
+    - password : `123` (required) - Password
+
++ Response 200 (application/json)
+
+        {
+            "key":"6384e2b2184bcbf58eccf10ca7a6563c"
+        }
+        
+### Create a New User [POST]
+
++ Request (application/json)
+
+        {
+            "username":"li4",
+            "password":"123",
+            "email":"li4@163.com",
+            "phone":"123"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "id":1,
+                "key":"9f9d51bc70ef21ca5c14f307980a29d8",
+                "username":"li4",
+                "password":"123",
+                "email":"li4@163.com",
+                "phone":"123"
+            }
+
+# Group Users
+
+## Users Collection [/v1/users{?key}]
+
++ Parameters
+    - key : `6384e2b2184bcbf58eccf10ca7a6563c` (string, required)
+
+### List Users [GET]
 
 + Response 200 (application/json)
 
         [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
+                "id":1,
+                "key": "******",
+                "username":"zhang3",
+                "password":"******",
+                "email":"zhang3@163.com",
+                "phone":"123"
+            }, {
+                "id":2,
+                "key": "******",
+                "username":"li4",
+                "password":"******",
+                "email":"li4@163.com",
+                "phone":"123"
             }
         ]
 
-### Create a New Question [POST]
+### Delete User [DELETE]
+    
++ Response 204
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+# Group Meetings
+
+## Meetings Collection [/v1/meetings{?key}]
+
++ Parameters
+    - key : `6384e2b2184bcbf58eccf10ca7a6563c` (string, required)
+
+### List all meetings [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id":1,
+                "title":"Meeting-one",
+                "host":"zhang3",
+                "members":["li4"],
+                "starttime":"2000/01/01/00:00",
+                "endtime":"2001/01/01/00:00"
+            },{
+                "id":2,
+                "title":"Meeting-two",
+                "host":"li4",
+                "members":["zhang3", "wang5"],
+                "starttime":"2002/01/01/00:00",
+                "endtime":"2003/01/01/00:00"
+            }
+        ]
+
+### Create a meeting [POST]
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "title":"Meeting-three",
+            "members":["li4"],
+            "starttime":"2004/01/01/00:00",
+            "endtime":"2005/01/01/00:00"
         }
 
 + Response 201 (application/json)
 
-    + Headers
-
-            Location: /questions/2
-
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "id": 3,
+                "title":"Meeting-three",
+                "host":"zhang3",
+                "members":["li4"],
+                "starttime":"2004/01/01/00:00",
+                "endtime":"2005/01/01/00:00"
             }
+

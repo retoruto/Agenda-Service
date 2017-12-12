@@ -6,6 +6,21 @@ import (
 	"fmt"
 	"encoding/json"
 )
+func LoginHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		req.ParseForm()
+		if (entity.CurrentUser.Name != "") {
+			w.WriteHeader(http.StatusForbidden)
+		} else {
+			if entity.UserLogIn(req.FormValue("username"), req.FormValue("password")) {
+				entity.CurrentUser = entity.FindUserByName(req.FormValue("username"))
+				formatter.JSON(w, http.StatusOK, entity.CurrentUser)
+			}
+			
+		}
+	}
+}
+
 func ListAllUserHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		if (entity.CurrentUser.Name == "") {
@@ -65,4 +80,24 @@ func ListAllMeetingHandler(formatter *render.Render) http.HandlerFunc {
 			formatter.JSON(w, http.StatusOK, uMeeting)
 		}
 	}
+}
+func CreateMeetingHandler(formatter *render.Render) http.HandlerFunc {
+
+		return func(w http.ResponseWriter, req *http.Request) {
+			if (entity.CurrentUser.Name == "") {
+				w.WriteHeader(http.StatusForbidden)
+			} else {
+				decoder := json.NewDecoder(req.Body)
+				var m entity.Meeting
+				err := decoder.Decode(&m)
+				if err != nil {
+					panic(err)
+				}
+				if !entity.CreateMeeting(entity.CurrentUser.Name,m.Title, m.StartDate, m.EndDate, m.Participators) {
+					w.WriteHeader(http.StatusForbidden)
+				} else {
+					formatter.JSON(w, http.StatusCreated, m)
+				}		
+			}
+		}
 }
