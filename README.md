@@ -1,11 +1,15 @@
 # Agenda-Service
 
+# API
+
 ## **the Api UI :**</br>
 ![Image text](https://github.com/retoruto/Agenda-Service/blob/master/photos/1.png)
 ![Image text](https://github.com/retoruto/Agenda-Service/blob/master/photos/2.png)
 ![Image text](https://github.com/retoruto/Agenda-Service/blob/master/photos/3.png)
 ![Image text](https://github.com/retoruto/Agenda-Service/blob/master/photos/6.png)
 ![Image text](https://github.com/retoruto/Agenda-Service/blob/master/photos/5.png)
+
+# 功能测试
 
 ## **监听端口状态：**</br>
 ```
@@ -182,5 +186,72 @@ $ ./agenda meetings
 
 ```
 
+# Go Test
+**使用cmd_test测试：**
+```
+$ go test
+=====> In TEST of UserRegister
+Register successfully.The account detail is :
+{
+  "Name": "Alice",
+  "Password": "123",
+  "Email": "Alice@163.com",
+  "Phone": "123"
+}
 
+=====> In TEST of UserLogin
+Using UserName and PassWord to login Agenda:
+
+attention:If the PassWord is right,you can login Agenda and use it
+If forget the PassWord,you must register another one User
+
+Usage:
+  agenda login -u [UserName] -p [PassWord] [flags]
+
+Flags:
+  -p, --password string   new user's password
+  -u, --username string   new user's username
+
+Global Flags:
+      --config string   config file (default is $HOME/.cli.yaml)
+Login successfully!
+ username:Alice
+=====> In TEST of ListAllUser
+[
+  {
+    "Name": "Alice",
+    "Password": "123",
+    "Email": "Alice@163.com",
+    "Phone": "123"
+  }
+]
+
+=====> In TEST of MeetingCreate
+To create a new meeting with:
+
+[Title] the Title of the meeting
+[Participator] the Participator of the meeting,the Participator can only attend one meeting during one meeting time
+[StartTime] the StartTime of the meeting
+[EndTime] the EndTime of the meeting
+
+Usage:
+  agenda create -t [Title] -p [Participator] -s [StartTime] -e [EndTime] [flags]
+
+Flags:
+  -e, --EndTime string         meeting's endTime
+  -p, --Participator strings   meeting's participator
+  -s, --StartTime string       meeting's startTime
+  -t, --Title string           meeting title
+
+Global Flags:
+      --config string   config file (default is $HOME/.cli.yaml)
+=====> In TEST of ListAllMeeting
+[]
+
+=====> In TEST of UserDelete
+Delete successfully.Delete user failed.
+PASS
+ok  	Agenda-Service/cli/cmd	0.138s
+
+```
 
