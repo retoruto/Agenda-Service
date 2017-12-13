@@ -105,11 +105,26 @@ Login successfully!
  username:Alice
 
 ```
+**重新注册Bob：**（用于创建会议）
 **创建会议：**
 **客户端**
 ```
+$ ./agenda create -t Meeting-Alice -p Bob -s 2000-01-01/00:00 -e 2001-01-01/00:00
+CreateMeeting successfully. 
+{
+  "Sponsor": "Alice",
+  "Title": "Meeting-Alice",
+  "StartDate": "2000-01-01/00:00",
+  "EndDate": "2001-01-01/00:00",
+  "Participators": [
+    "Bob"
+  ]
+}
 
 ```
 **服务器**
 ```
+[negroni] 2017-12-13T04:30:00-08:00 | 201 | 	 9.650766ms | localhost:8080 | POST /v1/meeting 
+
 ```
+
