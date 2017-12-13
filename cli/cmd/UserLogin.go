@@ -39,20 +39,15 @@ If forget the PassWord,you must register another one User`,
 		username, _ := cmd.Flags().GetString("username")
 		password, _ := cmd.Flags().GetString("password")
 
-		data := struct {
-			Name string `json:"username"`
-			Password string `json:"password"`
 
-		} {username, password}
-		fmt.Println(data)
 		res, err := http.Get(host + "/v1/login?username=" + username + "&password=" + password)
 		CheckErr(err)
 		defer res.Body.Close()
 		if res.StatusCode != 200 {
 			fmt.Println("Login failed.")
 		} else {
-			fmt.Print("Login successfully!")
-
+			fmt.Print("Login successfully!\n username:")
+			fmt.Println(username)
 		}
 	  },
 }

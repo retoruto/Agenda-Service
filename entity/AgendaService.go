@@ -88,6 +88,7 @@ func DeleteUser(userName string, password string) bool {
 		deleteMeeting(mf)
 		if (userName == CurrentUser.Name) {
 			CurrentUser.InitUser("", "", "", "")
+			writeCurrentUser()
 		}
 		return true
 	} else {

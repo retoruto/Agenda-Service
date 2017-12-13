@@ -71,8 +71,8 @@ var UserRegisterCmd = &cobra.Command{
 			err = json.Unmarshal(body, &data)
 			panicErr(err)
 			
-			fmt.Printf("Register successfully. You are logged in as\n%v\n", string(body))
-	}
+			fmt.Printf("Register successfully.The account detail is :\n%v\n", string(body))
+		}
 	},
 }
 

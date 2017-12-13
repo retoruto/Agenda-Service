@@ -28,15 +28,7 @@ var UserDeleteCmd = &cobra.Command{
 
 attention:After deleting,you will need to register a new User to login Agenda.`,
 Run: func(cmd *cobra.Command, args []string) {
-		/*
-		data := struct {
-			Name string `json:"username"`
-			Password string `json:"password"`
-			Email    string `json:"email"`
-			Phone    string `json:"phone"`
-		}{username, password, email, phone}
-		*/
-		fmt.Println("heihei")
+
 		res, err := http.NewRequest("DELETE", host+"/v1/user", nil)
 		panicErr(err)
 		

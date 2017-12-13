@@ -23,7 +23,7 @@ import (
   "Agenda-Service/entity"
 	"github.com/spf13/cobra"
 )
-
+//-s 2000-01-01/00:00 -e 2001-01-01/00:00
 // MeetingCreateCmd represents the MeetingCreate command
 var MeetingCreateCmd = &cobra.Command{
 	Use:   "create -t [Title] -p [Participator] -s [StartTime] -e [EndTime]",
@@ -44,28 +44,12 @@ var MeetingCreateCmd = &cobra.Command{
 		members, _ := cmd.Flags().GetStringSlice("Participator")
 		starttime, _ := cmd.Flags().GetString("StartTime")
 		endtime, _ := cmd.Flags().GetString("EndTime")
-		/*
-		data := struct {
-			Name string `json:"username"`
-			Password string `json:"password"`
-			Email    string `json:"email"`
-			Phone    string `json:"phone"`
-		}{username, password, email, phone}
-		*/
-		
-		buf, err := json.Marshal(entity.Meeting{"", title, starttime, endtime, members})
-		fmt.Println(entity.CurrentUser.Name)
-		fmt.Println(title)
-		fmt.Println(starttime)
-		fmt.Println(endtime)
-		fmt.Println(members)
 
-		
+		buf, err := json.Marshal(entity.Meeting{"", title, starttime, endtime, members})	
 		panicErr(err)
 		res, err := http.Post(host+"/v1/meeting","application/json", bytes.NewBuffer(buf))
 		panicErr(err)
 		defer res.Body.Close()
-		fmt.Println(res.StatusCode)
 		if res.StatusCode != http.StatusCreated {
 			fmt.Println("CreateMeeting failed. Meeting already exists")
 		} else {

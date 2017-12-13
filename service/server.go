@@ -24,7 +24,7 @@ func NewServer() *negroni.Negroni {
 
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/v1/login", LoginHandler(formatter)).Methods("GET")
-	
+	//mx.HandleFunc("/v1/logout", LogoutHandler(formatter)).Methods("GET")
 	
 	mx.HandleFunc("/v1/users", ListAllUserHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/v1/user", DeleteUserHandler(formatter)).Methods("DELETE")

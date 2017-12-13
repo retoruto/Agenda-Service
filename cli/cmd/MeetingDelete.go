@@ -35,7 +35,7 @@ var MeetingDeleteCmd = &cobra.Command{
 			fmt.Println("Delete meeting failed.")
 		} else {
 			// Decode JSON
-			fmt.Printf("Delete meeting successfully.")
+			fmt.Println("Delete meeting successfully.")
 	}
 	},
 }
