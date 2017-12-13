@@ -29,12 +29,7 @@ var usersCmd = &cobra.Command{
 	Short: "Show all users",
 	Long:  `This command returns all users that have registerred`,
 	Run: func(cmd *cobra.Command, args []string) {
-		key := getLocalKey()
-		if key == "" {
-			fmt.Println("Please login first.")
-			return
-		}
-		res, err := http.Get(host + "/v1/users?key=" + key)
+		res, err := http.Get(host + "/v1/ListAllUser" )
 		panicErr(err)
 		defer res.Body.Close()
 		body, err := ioutil.ReadAll(res.Body)

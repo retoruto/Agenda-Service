@@ -15,11 +15,11 @@
 package cmd
 
 import (
-	"encoding/json"
+
 	"fmt"
-	"io/ioutil"
+
 	"net/http"
-	"os"
+	
 
 	"github.com/spf13/cobra"
 )
@@ -37,30 +37,21 @@ Keep it secret`,
 		}
 		username, _ := cmd.Flags().GetString("username")
 		password, _ := cmd.Flags().GetString("password")
-		res, err := http.Get(host + "/v1/key?username=" +
-			username + "&password=" + password)
-		panicErr(err)
+
+		data := struct {
+			Name string `json:"username"`
+			Password string `json:"password"`
+
+		} {username, password}
+		fmt.Println(data)
+		res, err := http.Get(host + "/v1/login?username=" + username + "&password=" + password)
+		CheckErr(err)
 		defer res.Body.Close()
 		if res.StatusCode != 200 {
-			fmt.Println("Login failed. Either Username or password isn't correct")
+			fmt.Println("Login failed.")
 		} else {
-			// Decode JSON.
-			body, err := ioutil.ReadAll(res.Body)
-			panicErr(err)
-			var data map[string]interface{}
-			err = json.Unmarshal(body, &data)
-			panicErr(err)
+			fmt.Print("Login successfully!")
 
-			fmt.Printf("Login successfully. Your api key is\n%v\n",
-				data["key"].(string))
-
-			// Write the api key to file.
-			keyFile, err := os.OpenFile(keyPath,
-				os.O_CREATE|os.O_RDWR, os.ModePerm)
-			defer keyFile.Close()
-			panicErr(err)
-			_, err = keyFile.Write([]byte(data["key"].(string)))
-			panicErr(err)
 		}
 	},
 }

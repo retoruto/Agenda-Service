@@ -5,16 +5,16 @@ import (
 )
 
 
-//不要在login后调用StartAgenda
-/*
+
+
 func StartAgenda() bool {
-	ReadFromFile()
+	ReadFromDb()
 	ReadCurrentUser()
 	if CurrentUser.Name == "" {
 		return false
 	}
 	return true
-}*/
+}
 /*
 func QuitAgenda() {
 	writeToFile()
@@ -30,6 +30,7 @@ func QuitAgenda() {
 //登录命令不需要调用StartAgenda,但需要调用QuitAgenda来保存登录信息
 func UserLogIn(userName string, password string) bool{
 		ReadFromDb()
+		ReadCurrentUser()
 		if (CurrentUser.Name != "") {
 			return false
 		}
@@ -43,6 +44,7 @@ func UserLogIn(userName string, password string) bool{
 		} else {
 			//当前用户信息
 			CurrentUser = ulist[0]
+			writeCurrentUser()
 			return true
 		}
 	}

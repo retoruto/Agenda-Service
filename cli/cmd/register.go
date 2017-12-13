@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
+	"Agenda-Service/entity"
 
 	"github.com/spf13/cobra"
 )
@@ -39,16 +39,18 @@ var registerCmd = &cobra.Command{
 		password, _ := cmd.Flags().GetString("password")
 		email, _ := cmd.Flags().GetString("email")
 		phone, _ := cmd.Flags().GetString("phone")
+		/*
 		data := struct {
-			Username string `json:"username"`
+			Name string `json:"username"`
 			Password string `json:"password"`
 			Email    string `json:"email"`
 			Phone    string `json:"phone"`
 		}{username, password, email, phone}
-		buf, err := json.Marshal(data)
+		*/
+		buf, err := json.Marshal(entity.User{username, password, email, phone})
+		
 		panicErr(err)
-		res, err := http.Post(host+"/v1/key",
-			"application/json", bytes.NewBuffer(buf))
+		res, err := http.Post(host+"/v1/key","application/json", bytes.NewBuffer(buf))
 		panicErr(err)
 		defer res.Body.Close()
 		if res.StatusCode != 201 {
@@ -57,19 +59,11 @@ var registerCmd = &cobra.Command{
 			// Decode JSON
 			body, err := ioutil.ReadAll(res.Body)
 			panicErr(err)
-			var data map[string]interface{}
+			var data entity.User
 			err = json.Unmarshal(body, &data)
 			panicErr(err)
-
+			
 			fmt.Printf("Register successfully. You are logged in as\n%v\n", string(body))
-
-			// Write the api key to file
-			keyFile, err := os.OpenFile(keyPath,
-				os.O_CREATE|os.O_RDWR, os.ModePerm)
-			panicErr(err)
-			defer keyFile.Close()
-			_, err = keyFile.Write([]byte(data["key"].(string)))
-			panicErr(err)
 		}
 	},
 }

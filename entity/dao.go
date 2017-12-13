@@ -46,14 +46,14 @@ func FindUserByName(name string) User {
 
 //对未存在的用户进行插入，若存在则返回错误
 func CreateUser_DB(user *User) error {
-	_, err := engine.Insert(&UserTable{UserName:user.Name})
+	_, err := engine.Insert(&UserTable{user.Name, user.Password, user.Email, user.Phone})
 	return err
 }
 
 //删除用户
 func DeleteUser_DB(user *User) error {
 	// 通过 Delete 方法删除记录
-	_, err := engine.Delete(&UserTable{user.Name, user.Password, user.Email, user.Phone})
+	_, err := engine.Delete(&UserTable{UserName:user.Name})
 	
 	return err
 }
@@ -90,13 +90,7 @@ func FindAllMeeting() ([]Meeting, error) {
 //对未存在的会议进行插入，若存在则返回错误
 func CreateMeeting_DB(meeting *Meeting) error {
 	
-  mt := &MeetingTable { 	
-  Title : meeting.Title,
-	Sponsor : meeting.Sponsor,
-	StartTime : meeting.StartDate,
-	EndTime : meeting.EndDate,
-	Participators :GetJson(meeting.Participators)}
-	_, err := engine.Insert(mt)
+	_, err := engine.Insert(&MeetingTable{meeting.Title, meeting.Sponsor, meeting.StartDate,meeting.EndDate, GetJson(meeting.Participators)})
 	return err
 }
 

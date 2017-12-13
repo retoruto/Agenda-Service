@@ -8,12 +8,32 @@ import (
 )
 func LoginHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		fmt.Println("login")
+		entity.StartAgenda()
 		req.ParseForm()
 		if (entity.CurrentUser.Name != "") {
 			w.WriteHeader(http.StatusForbidden)
-		} else {
+		} else {	
 			if entity.UserLogIn(req.FormValue("username"), req.FormValue("password")) {
 				entity.CurrentUser = entity.FindUserByName(req.FormValue("username"))
+				fmt.Print(entity.CurrentUser)
+				formatter.JSON(w, http.StatusOK, entity.CurrentUser)
+			}
+			
+		}
+	}
+}
+func LogoutHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		fmt.Println("logout")
+		entity.StartAgenda()
+		req.ParseForm()
+		if (entity.CurrentUser.Name != "") {
+			w.WriteHeader(http.StatusForbidden)
+		} else {	
+			if entity.UserLogIn(req.FormValue("username"), req.FormValue("password")) {
+				entity.CurrentUser = entity.FindUserByName(req.FormValue("username"))
+				fmt.Print(entity.CurrentUser)
 				formatter.JSON(w, http.StatusOK, entity.CurrentUser)
 			}
 			
@@ -23,10 +43,13 @@ func LoginHandler(formatter *render.Render) http.HandlerFunc {
 
 func ListAllUserHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		fmt.Println("ListAllUser")
+		entity.StartAgenda()
 		if (entity.CurrentUser.Name == "") {
 			w.WriteHeader(http.StatusForbidden)
 		} else {
 			uList, err := entity.FindAllUser()
+			fmt.Println(uList)
 			if err != nil {
 				panic(err)
 			}
@@ -42,7 +65,6 @@ func UserRegisterHandler(formatter *render.Render) http.HandlerFunc {
 		if err != nil {
 			panic(err)
 		}
-
 		if !entity.UserRegister(u.Name, u.Password, u.Email, u.Phone) {
 			w.WriteHeader(http.StatusForbidden)
 			return

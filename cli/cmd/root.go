@@ -16,7 +16,7 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
+	
 	"os"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -30,8 +30,12 @@ const (
 
 
 )
+func panicErr(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
 
-var key string
 
 var cfgFile string
 
@@ -53,13 +57,6 @@ func Execute() {
 		os.Exit(1)
 	}
 }
-
-func panicErr(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 
 func init() {
 	cobra.OnInitialize(initConfig)
@@ -98,5 +95,11 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	}
+}
+
+func CheckErr(err error) {
+	if err != nil {
+		panic(err)
 	}
 }
