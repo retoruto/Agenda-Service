@@ -67,7 +67,7 @@ ListAllUser
 [negroni] 2017-12-13T04:15:35-08:00 | 200 | 	 535.839µs | localhost:8080 | GET /v1/users 
 
 ```
-##**UserLogin:**</br>
+## **UserLogin:**</br>
 **客户端**
 ```
 $ ./agenda login -u Bob -p 123
@@ -84,7 +84,7 @@ login
 {Bob 123 Bob@163.com 123}[negroni] 2017-12-13T04:19:09-08:00 | 200 | 	 1.849012ms | localhost:8080 | GET /v1/login 
 
 ```
-##**UserDelete:**</br>
+## **UserDelete:**</br>
 当前的账号为Bob
 **客户端**
 ```
@@ -96,4 +96,20 @@ Delete successfully.
 ```
 delete user successfully!
 [negroni] 2017-12-13T04:20:42-08:00 | 200 | 	 17.604143ms | localhost:8080 | DELETE /v1/user 
+```
+## **MeetingCreate:**</br>
+**重新登陆Alice：**
+```
+$ ./agenda login -u Alice -p 123
+Login successfully!
+ username:Alice
+
+```
+**创建会议：**
+**客户端**
+```
+
+```
+**服务器**
+```
 ```
