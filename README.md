@@ -105,7 +105,18 @@ Login successfully!
  username:Alice
 
 ```
-**重新注册Bob：**（用于创建会议）
+**重新注册Bob：**（用于创建会议）</br>
+```
+./agenda register -u Bob -p 123 -e Bob@163.com -t 123
+Register successfully.The account detail is :
+{
+  "Name": "Bob",
+  "Password": "123",
+  "Email": "Bob@163.com",
+  "Phone": "123"
+}
+
+```
 **创建会议：**
 **客户端**
 ```
@@ -120,11 +131,56 @@ CreateMeeting successfully.
     "Bob"
   ]
 }
+./agenda create -t Meeting-Alice-2 -p Bob -s 2002-01-01/00:00 -e 2003-01-01/00:00
+CreateMeeting successfully. 
+{
+  "Sponsor": "Alice",
+  "Title": "Meeting-Alice-2",
+  "StartDate": "2002-01-01/00:00",
+  "EndDate": "2003-01-01/00:00",
+  "Participators": [
+    "Bob"
+  ]
+}
 
 ```
 **服务器**
 ```
 [negroni] 2017-12-13T04:30:00-08:00 | 201 | 	 9.650766ms | localhost:8080 | POST /v1/meeting 
+[negroni] 2017-12-13T04:36:17-08:00 | 201 | 	 10.600482ms | localhost:8080 | POST /v1/meeting 
 
 ```
+## **ListAllMeetings:**</br>
+**客户端**
+```
+$ ./agenda meetings
+[
+  {
+    "Sponsor": "Alice",
+    "Title": "Meeting-Alice",
+    "StartDate": "2000-01-01/00:00",
+    "EndDate": "2001-01-01/00:00",
+    "Participators": [
+      "Bob"
+    ]
+  },
+  {
+    "Sponsor": "Alice",
+    "Title": "Meeting-Alice-2",
+    "StartDate": "2002-01-01/00:00",
+    "EndDate": "2003-01-01/00:00",
+    "Participators": [
+      "Bob"
+    ]
+  }
+]
+
+```
+**服务器**
+```
+[negroni] 2017-12-13T04:37:38-08:00 | 200 | 	 654.026µs | localhost:8080 | GET /v1/meetings 
+
+```
+
+
 
